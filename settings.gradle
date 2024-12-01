@@ -1,0 +1,88 @@
+pluginManagement {
+    repositories {
+        maven { url = "https://maven.minecraftforge.net/" }
+        maven {
+            name 'Maven for PR #118' // https://github.com/neoforged/ModDevGradle/pull/118
+            url 'https://prmaven.neoforged.net/ModDevGradle/pr118'
+            content {
+                includeModule('net.neoforged.moddev.legacy', 'net.neoforged.moddev.legacy.gradle.plugin')
+                includeModule('net.neoforged.moddev', 'net.neoforged.moddev.gradle.plugin')
+                includeModule('net.neoforged.moddev.repositories', 'net.neoforged.moddev.repositories.gradle.plugin')
+                includeModule('net.neoforged', 'moddev-gradle')
+            }
+        }
+        gradlePluginPortal()
+    }
+}
+
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+    }
+    versionCatalogs {
+        // Minecraft Version
+        def minecraftVersion = "1.20.1"
+
+        // Mod Dependencies Versions
+        // Common
+        def jeiVersion = "15.20.0.105"
+        def reiVersion = "12.1.785"
+        def emiVersion = "1.1.13"
+
+        // Forge
+        def forgeVersion = "47.1.47"
+        def jadeForgeVersion = "11.6.3"
+
+        // Libs
+        def quiltMappingsVersion = "5"  // https://lambdaurora.dev/tools/import_quilt.html
+        def parchmentVersion = "2023.09.03" // https://parchmentmc.org/docs/getting-started
+        def modDevGradleVersion = "2.0.61-beta-pr-118-legacy"
+        def macheteVersion = "1.+"
+        def mixinextrasVersion = "0.2.0"
+        def lombokPluginVersion = "8.7.1"
+
+        forge {
+            version("forgeShortVersion", forgeVersion)
+            def minecraftForge = version("minecraftForge", "${minecraftVersion}-${forgeVersion}")
+            library("minecraftForge", "net.minecraftforge", "forge").versionRef(minecraftForge)
+
+            def jei = version("jei", jeiVersion)
+            library("jei-common-api", "mezz.jei", "jei-${minecraftVersion}-common-api").versionRef(jei)
+            library("jei-forge-api", "mezz.jei", "jei-${minecraftVersion}-forge-api").versionRef(jei)
+            library("jei-forge-impl", "mezz.jei", "jei-${minecraftVersion}-forge").versionRef(jei)
+
+            def rei = version("rei", reiVersion)
+            library("rei-plugin", "me.shedaniel", "RoughlyEnoughItems-default-plugin-forge").versionRef(rei)
+            library("rei-api", "me.shedaniel", "RoughlyEnoughItems-api-forge").versionRef(rei)
+            library("rei-forge", "me.shedaniel", "RoughlyEnoughItems-forge").versionRef(rei)
+
+            def emi = version("emi", emiVersion + "+" + minecraftVersion)
+            library("emi", "dev.emi", "emi-forge").versionRef(emi)
+
+            def jade = version("jade", jadeForgeVersion)
+            library("jade", "maven.modrinth", "jade").versionRef(jade)
+
+            def mixinextras = version("mixinextras", mixinextrasVersion)
+            library("mixinextras-forge", "io.github.llamalad7", "mixinextras-forge").versionRef(mixinextras)
+        }
+
+        libs {
+            version("quiltMappings", quiltMappingsVersion)
+            version("parchment", parchmentVersion)
+
+            def minecraft = version("minecraft", minecraftVersion)
+            library("minecraft", "com.mojang", "minecraft").versionRef(minecraft)
+
+            def modDevGradle = version("modDevGradleLegacy", modDevGradleVersion)
+            plugin("modDevGradle", "net.neoforged.moddev.legacy").versionRef(modDevGradle)
+
+            def machete = version("machete", macheteVersion)
+            plugin("machete", "io.github.p03w.machete").versionRef(machete)
+
+            def lombok = version("lombok", lombokPluginVersion)
+            plugin("lombok", "io.freefair.lombok").versionRef(lombok)
+        }
+    }
+}
+
+rootProject.name = mod_id

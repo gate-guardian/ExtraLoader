@@ -1,0 +1,19 @@
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url = "https://api.modrinth.com/maven" } // LazyDFU, Jade
+    maven { url = "https://maven.terraformersmc.com/releases/" } // Mod Menu, EMI
+    maven { url = "https://maven.shedaniel.me/" } // Cloth Config, REI
+    maven {
+        name = "Jared's maven"
+        url = "https://maven.blamejared.com/"
+    } // JEI
+    maven {
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = "https://modmaven.dev"
+    } // JEI mirror, AE2
+    maven { url = "https://maven.parchmentmc.org" } // Parchment mappings
+    maven { url = "https://maven.quiltmc.org/repository/release" } // Quilt Mappings
+    maven { url = 'https://jitpack.io' } // Mixin Extras, Fabric ASM
+}

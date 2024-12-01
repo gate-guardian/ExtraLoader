@@ -1,0 +1,40 @@
+task printVersion {
+    doLast {
+        println mod_version
+    }
+}
+
+// This block of code expands all declared replace properties in the specified resource targets.
+// A missing property will result in an error. Properties are expanded using ${} Groovy notation.
+var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
+    var forgeVers = forge.versions.forgeShortVersion.get().split("\\.")[0]
+    var replaceProperties = [
+            version                 : version,
+            mod_id                  : mod_id,
+            minecraft_version       : libs.versions.minecraft.get(),
+            minecraft_version_range : minecraft_version_range,
+            loader_version          : forgeVers,
+            loader_version_range    : loader_version_range,
+            forge_version           : forgeVers, // only specify major version of forge
+            forge_version_range     : forge_version_range,
+            jei_version             : forge.versions.jei.get(),
+            emi_version             : forge.versions.emi.get(),
+            jade_version            : forge.versions.jade.get(),
+            mod_license             : mod_license,
+            mod_name                : mod_name,
+            mod_description         : mod_description,
+            mod_authors             : mod_authors,
+            pack_format_number      : pack_format_number
+//            mod_url             : mod_url,
+//            mod_issue_tracker   : mod_issue_tracker
+    ]
+    inputs.properties replaceProperties
+    expand replaceProperties
+    from "src/main/templates"
+    into "build/generated/sources/modMetadata"
+}
+// Include the output of "generateModMetadata" as an input directory for the build
+// this works with both building through Gradle and the IDE.
+sourceSets.main.resources.srcDir generateModMetadata
+// To avoid having to run "generateModMetadata" manually, make it run on every project reload
+neoForge.ideSyncTask generateModMetadata

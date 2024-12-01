@@ -1,0 +1,25 @@
+dependencies {
+    compileOnly 'org.jetbrains:annotations:24.1.0'
+
+    // JEI
+    modCompileOnly(forge.jei.common.api) { transitive = false }
+    modCompileOnly(forge.jei.forge.api) { transitive = false }
+    modCompileOnly(forge.jei.forge.impl) { transitive = false }
+
+    // REI
+    modCompileOnly forge.rei.plugin
+    modCompileOnly forge.rei.api
+    modCompileOnly forge.rei.forge
+
+    // EMI
+    //modCompileOnly("dev.emi:emi-forge:${forge.versions.emi.get()}:api")
+    modImplementation forge.emi
+
+    // Jade
+    modImplementation forge.jade
+
+    // Mixin (& Extras)
+    api annotationProcessor("io.github.llamalad7:mixinextras-common:${this.forge.versions.mixinextras.get()}")
+    jarJar "io.github.llamalad7:mixinextras-forge:${this.forge.versions.mixinextras.get()}"
+    annotationProcessor 'org.spongepowered:mixin:0.8.7:processor'
+}
