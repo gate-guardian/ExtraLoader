@@ -22,7 +22,7 @@ base {
 afterEvaluate {
     tasks.withType(org.gradle.jvm.tasks.Jar).configureEach {
         manifest.attributes([
-                'MixinConfigs': 'examplemod.mixins.json',
+//                'MixinConfigs': 'examplemod.mixins.json',
                 'Specification-Title': project.name,
                 'Specification-Version': mod_version,
 //                'Specification-Vendor': ,
