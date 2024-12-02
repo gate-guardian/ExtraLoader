@@ -1,6 +1,7 @@
 package com.morphismmc.extraloader.pack;
 
 import com.morphismmc.extraloader.ExtraLoader;
+import net.minecraft.ChatFormatting;
 import net.minecraft.FileUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;
@@ -17,16 +18,16 @@ import java.util.function.Consumer;
 @ParametersAreNonnullByDefault
 public class ExtraRepositorySource implements RepositorySource {
 
+    private static final PackSource EXTRA = PackSource.create(name -> Component
+                    .translatable("pack.nameAndSource", name, ExtraLoader.NAME)
+                    .withStyle(ChatFormatting.AQUA), true);
+
     private final Path folder;
     private final PackType packType;
-    private final PackSource packSource;
-    private final boolean require;
 
-    public ExtraRepositorySource(Path folder, PackType packType, PackSource packSource, boolean require) {
+    public ExtraRepositorySource(Path folder, PackType packType) {
         this.folder = folder;
         this.packType = packType;
-        this.packSource = packSource;
-        this.require = require;
     }
 
     private static String nameFromPath(Path path) {
@@ -38,8 +39,8 @@ public class ExtraRepositorySource implements RepositorySource {
             FileUtil.createDirectoriesSafe(this.folder);
             FolderRepositorySource.discoverPacks(folder, false, (path, supplier) -> {
                 String name = nameFromPath(path);
-                Pack pack = Pack.readMetaAndCreate("file/" + name, Component.literal(name),
-                        require, supplier, packType, Pack.Position.TOP, packSource);
+                Pack pack = Pack.readMetaAndCreate(ExtraLoader.ID + "/" + name, Component.literal(name),
+                        false, supplier, packType, Pack.Position.TOP, EXTRA);
                 if (pack != null) {
                     onLoad.accept(pack);
                 }

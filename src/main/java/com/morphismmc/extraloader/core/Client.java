@@ -2,11 +2,13 @@ package com.morphismmc.extraloader.core;
 
 import com.morphismmc.extraloader.pack.ExtraRepositorySource;
 import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.repository.PackSource;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.AddPackFindersEvent;
 
 import java.nio.file.Path;
 
+@OnlyIn(Dist.CLIENT)
 final class Client extends Common {
 
     @Override
@@ -14,8 +16,7 @@ final class Client extends Common {
         super.addPackFinders(event);
         if (event.getPackType() == PackType.CLIENT_RESOURCES) {
             event.addRepositorySource(new ExtraRepositorySource(
-                    Path.of(Config.CLIENT.resourcepacksPath.get()),
-                    PackType.CLIENT_RESOURCES, PackSource.DEFAULT, true));
+                    Path.of(Config.CLIENT.resourcepacksPath.get()), PackType.CLIENT_RESOURCES));
         }
     }
 }
