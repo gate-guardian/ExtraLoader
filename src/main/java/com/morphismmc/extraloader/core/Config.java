@@ -2,7 +2,6 @@ package com.morphismmc.extraloader.core;
 
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import com.electronwill.nightconfig.core.io.WritingMode;
-import com.google.common.base.Joiner;
 import com.morphismmc.extraloader.ExtraLoader;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -13,8 +12,6 @@ import net.minecraftforge.fml.loading.FMLPaths;
 import java.io.File;
 
 public final class Config {
-
-    private static final Joiner PATH_JOINER = Joiner.on(File.separator);
 
     private static final ForgeConfigSpec CLIENT_SPEC;
     public static final Client CLIENT;
@@ -63,7 +60,7 @@ public final class Config {
     }
 
     private static String getDefaultPath(String path) {
-        return PATH_JOINER.join(System.getProperty("user.home"),
+        return String.join(File.separator, System.getProperty("user.home"),
                 "." + ExtraLoader.ID, FMLLoader.versionInfo().mcVersion(), path);
     }
 
