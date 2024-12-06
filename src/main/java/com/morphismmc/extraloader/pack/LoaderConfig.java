@@ -27,7 +27,7 @@ public record LoaderConfig(boolean blackList, List<String> packs) {
     public static LoaderConfig load(Path path) {
         var filePath = path.resolve(NAME);
         var file = filePath.toFile();
-        if (!file.exists() && !FileUtils.saveJson(path, DEFAULT)) {
+        if (!file.exists() && !FileUtils.saveJson(filePath, DEFAULT)) {
             ExtraLoader.LOGGER.warn("Could not create config file!");
         } else {
             var element = FileUtils.loadJson(filePath);
