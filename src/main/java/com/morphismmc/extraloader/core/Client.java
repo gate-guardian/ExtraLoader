@@ -19,4 +19,5 @@ final class Client extends Common {
                     Path.of(Config.CLIENT.resourcepacksPath.get()), PackType.CLIENT_RESOURCES));
         }
     }
+
 }

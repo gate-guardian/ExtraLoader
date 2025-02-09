@@ -49,4 +49,5 @@ public class ExtraRepositorySource implements RepositorySource {
             ExtraLoader.LOGGER.warn("Failed to list packs in {}", folder, ex);
         }
     }
+
 }

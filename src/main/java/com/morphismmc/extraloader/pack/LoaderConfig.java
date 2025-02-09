@@ -5,6 +5,7 @@ import com.morphismmc.extraloader.utils.FileUtils;
 import net.minecraft.MethodsReturnNonnullByDefault;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.io.File;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
@@ -21,7 +22,7 @@ public record LoaderConfig(boolean blackList, List<String> packs) {
 
     public LoaderConfig {
         Collections.reverse(packs);
-        packs.replaceAll(s -> ExtraLoader.ID + "/" + s);
+        packs.replaceAll(s -> ExtraLoader.ID + File.separator + s);
     }
 
     public static LoaderConfig load(Path path) {
@@ -37,4 +38,5 @@ public record LoaderConfig(boolean blackList, List<String> packs) {
         }
         return DEFAULT;
     }
+
 }

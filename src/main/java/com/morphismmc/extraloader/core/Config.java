@@ -49,8 +49,8 @@ public final class Config {
 
         private Common(ForgeConfigSpec.Builder builder) {
             datapacksPath = builder
-                    .comment("datapacksPath")
-                    .define("datapacks Path", getDefaultPath("datapacks"));
+                    .comment("datapacks Path")
+                    .define("datapacksPath", getDefaultPath("datapacks"));
         }
     }
 
@@ -75,4 +75,5 @@ public final class Config {
         configData.load();
         spec.setConfig(configData);
     }
+
 }

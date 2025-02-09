@@ -31,4 +31,5 @@ public abstract sealed class Common implements ExtraLoader permits Client, Serve
                     Path.of(Config.COMMON.datapacksPath.get()), PackType.SERVER_DATA));
         }
     }
+
 }

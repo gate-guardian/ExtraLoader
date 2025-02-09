@@ -5,4 +5,5 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.DEDICATED_SERVER)
 final class Server extends Common {
+
 }

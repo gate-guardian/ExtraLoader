@@ -26,7 +26,7 @@ public abstract class PackRepositoryMixin {
     )
     private Collection<String> modifySelected(Collection<String> ids) {
         if (ids.isEmpty()) return ids;
-        // check that Loader Config has been applied
+        // check if Loader Config has been applied
         if (ids.stream().anyMatch(id -> id.startsWith(ExtraLoader.ID))) return ids;
 
         var path = ids.contains("mod_resources")
@@ -44,4 +44,5 @@ public abstract class PackRepositoryMixin {
         }
         return list;
     }
+
 }
