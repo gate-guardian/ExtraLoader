@@ -1,0 +1,45 @@
+[versions]
+minecraft             = "1.20.1"
+forge                 = "47.4.3"
+parchment             = "2023.09.03" # https: //parchmentmc.org/docs/getting-started
+
+jetbrains-annotations = "26.0.1"
+mixin                 = "0.8.7"
+mixinExtras           = "0.5.0-rc.3"
+
+emi                   = "1.1.22+1.20.1"
+jei                   = "15.20.0.121"
+rei                   = "12.1.785"
+
+jade                  = "11.13.2+forge"
+modernui              = "3.12.0.1"
+jecharacters          = "4.6.1"
+
+# Plugins
+modDevGradle          = "2.0.122"
+lombok                = "9.1.0"
+
+[libraries]
+jetbrains-annotations = { module = "org.jetbrains:annotations"                           , version.ref = "jetbrains-annotations" }
+mixin                 = { module = "org.spongepowered:mixin"                             , version.ref = "mixin" }
+mixinExtras-common    = { module = "io.github.llamalad7:mixinextras-common"              , version.ref = "mixinExtras" }
+
+emi                   = { module = "dev.emi:emi-forge"                                   , version.ref = "emi" }
+jei-api-common        = { module = "mezz.jei:jei-1.20.1-common-api"                      , version.ref = "jei" }
+jei-api-forge         = { module = "mezz.jei:jei-1.20.1-forge-api"                       , version.ref = "jei" }
+jei-impl              = { module = "mezz.jei:jei-1.20.1-forge"                           , version.ref = "jei" }
+rei-api               = { module = "me.shedaniel:RoughlyEnoughItems-api-forge"           , version.ref = "rei" }
+rei-impl              = { module = "me.shedaniel:RoughlyEnoughItems-forge"               , version.ref = "rei" }
+rei-plugin            = { module = "me.shedaniel:RoughlyEnoughItems-default-plugin-forge", version.ref = "rei" }
+
+jade                  = { module = "maven.modrinth:jade"                                 , version.ref = "jade" }
+modernui              = { module = "maven.modrinth:modern-ui"                            , version.ref = "modernui" }
+jecharacters          = { module = "maven.modrinth:justenoughcharacters"                 , version.ref = "jecharacters" }
+
+[plugins]
+modDevGradle = { id = "net.neoforged.moddev.legacyforge", version.ref = "modDevGradle" }
+lombok       = { id = "io.freefair.lombok"              , version.ref = "lombok" }
+
+[bundles]
+jei = ["jei-api-common", "jei-api-forge", "jei-impl"]
+rei = ["rei-api", "rei-impl", "rei-plugin"]
