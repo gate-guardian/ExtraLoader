@@ -148,7 +148,10 @@ obfuscation {
 dependencies {
     // Mixin (& Extras)
     annotationProcessor(variantOf(libs.mixin) { classifier("processor") })
-    annotationProcessor(libs.mixinExtras.common)?.let { api(it) }
+    annotationProcessor(libs.mixinExtras.common)
+    implementation(libs.mixinExtras.common)
+    implementation(libs.mixinExtras.forge)
+    jarJar(libs.mixinExtras.forge)
 
     // Recipe Viewers
     modCompileOnly(libs.jei.api.common)

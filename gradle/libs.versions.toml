@@ -23,6 +23,7 @@ lombok                = "9.1.0"
 jetbrains-annotations = { module = "org.jetbrains:annotations"                           , version.ref = "jetbrains-annotations" }
 mixin                 = { module = "org.spongepowered:mixin"                             , version.ref = "mixin" }
 mixinExtras-common    = { module = "io.github.llamalad7:mixinextras-common"              , version.ref = "mixinExtras" }
+mixinExtras-forge     = { module = "io.github.llamalad7:mixinextras-forge"               , version.ref = "mixinExtras" }
 
 emi                   = { module = "dev.emi:emi-forge"                                   , version.ref = "emi" }
 jei-api-common        = { module = "mezz.jei:jei-1.20.1-common-api"                      , version.ref = "jei" }

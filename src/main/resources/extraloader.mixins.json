@@ -1,12 +1,13 @@
 {
   "required": true,
-  "package": "com.morphismmc.extraloader.core.mixins",
+  "package": "dev.gateguardian.extraloader.mixin",
   "refmap": "extraloader.refmap.json",
   "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8",
-  "client": [],
+  "client": [
+    "client.OptionsMixin"
+  ],
   "mixins": [
-    "PackRepositoryMixin"
   ],
   "injectors": {
     "defaultRequire": 1

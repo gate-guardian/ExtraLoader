@@ -1,0 +1,9 @@
+@FieldsAreNonnullByDefault
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
+package dev.gateguardian.extraloader;
+
+import net.minecraft.FieldsAreNonnullByDefault;
+import net.minecraft.MethodsReturnNonnullByDefault;
+
+import javax.annotation.ParametersAreNonnullByDefault;

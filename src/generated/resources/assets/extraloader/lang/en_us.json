@@ -1,0 +1,7 @@
+{
+  "command.extraloader.open.failure.failed": "Failed to open directory: %s",
+  "command.extraloader.open.failure.notDirectory": "Path is not a directory: %s",
+  "command.extraloader.open.success": "Opened directory: %s",
+  "config.extraloader.disabledResourcePacks": "Disabled resource packs",
+  "config.extraloader.enableSystemGlobalPacks": "Enable system-global packs"
+}

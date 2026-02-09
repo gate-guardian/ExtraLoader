@@ -1,0 +1,7 @@
+{
+  "command.extraloader.open.success": "已打开目录: %s",
+  "command.extraloader.open.failure.notDirectory": "路径不是目录: %s",
+  "command.extraloader.open.failure.failed": "打开目录失败: %s",
+  "config.extraloader.enableSystemGlobalPacks": "启用系统级全局包",
+  "config.extraloader.disabledResourcePacks": "禁用的资源包"
+}

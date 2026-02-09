@@ -5,6 +5,7 @@ bin
 .metadata
 .classpath
 .project
+eclipse
 
 # idea
 out
@@ -18,9 +19,10 @@ build
 .gradle
 
 # other
-eclipse
 run
-runs
 run-data
+src/generated/resources/.cache/
 
-repo
+# Files from Forge MDK
+forge*changelog.txt
+/run-data/
