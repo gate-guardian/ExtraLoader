@@ -10,6 +10,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.fml.loading.FMLPaths;
+import org.jetbrains.annotations.UnknownNullability;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +29,7 @@ public class ExtraLoader {
     public static final Path GLOBAL_PACK_DIR = FMLPaths.GAMEDIR.get().resolve(MOD_ID);
 
     /**
-     * Global pack directory path: <user_home>/.extraloader/<mc_version>/
+     * System global pack directory path: <user_home>/.extraloader/<mc_version>/
      */
     public static final Path SYSTEM_GLOBAL_PACK_DIR = Path.of(
             System.getProperty("user.home"),
@@ -37,6 +38,7 @@ public class ExtraLoader {
     );
 
     @Getter
+    @UnknownNullability
     protected static ExtraLoader instance;
 
     public ExtraLoader(FMLJavaModLoadingContext context) {
