@@ -5,11 +5,12 @@ import lombok.Getter;
 import lombok.experimental.Accessors;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
-import net.minecraftforge.event.AddPackFindersEvent;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.loading.FMLLoader;
-import net.minecraftforge.fml.loading.FMLPaths;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.loading.FMLLoader;
+import net.neoforged.fml.loading.FMLPaths;
+import net.neoforged.neoforge.event.AddPackFindersEvent;
 import org.jetbrains.annotations.UnknownNullability;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,17 +42,16 @@ public class ExtraLoader {
     @UnknownNullability
     protected static ExtraLoader instance;
 
-    public ExtraLoader(FMLJavaModLoadingContext context) {
+    public ExtraLoader(IEventBus modEventBus) {
         if (instance != null) {
             throw new IllegalStateException("ExtraLoader instance already exists");
         }
         instance = this;
 
-        context.registerConfig(ModConfig.Type.COMMON, ExtraConfig.commonSpec);
-        context.registerConfig(ModConfig.Type.CLIENT, ExtraConfig.clientSpec);
+        ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.COMMON, ExtraConfig.commonSpec);
+        ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.CLIENT, ExtraConfig.clientSpec);
 
-        var modBus = context.getModEventBus();
-        modBus.addListener(this::addPackFinders);
+        modEventBus.addListener(this::addPackFinders);
     }
 
     public static ResourceLocation id(String path) {

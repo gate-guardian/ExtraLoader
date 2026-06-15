@@ -4,14 +4,14 @@ import dev.gateguardian.extraloader.common.ExtraConfig;
 import dev.gateguardian.extraloader.common.ExtraLoader;
 import dev.gateguardian.extraloader.common.pack.ExtraRepositorySource;
 import net.minecraft.server.packs.PackType;
-import net.minecraftforge.event.AddPackFindersEvent;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.event.AddPackFindersEvent;
 
 public class ExtraLoaderClient extends ExtraLoader {
 
-    public ExtraLoaderClient(FMLJavaModLoadingContext context) {
-        super(context);
+    public ExtraLoaderClient(IEventBus modEventBus) {
+        super(modEventBus);
     }
 
     @Override

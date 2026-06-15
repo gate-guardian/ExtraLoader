@@ -2,7 +2,7 @@ package dev.gateguardian.extraloader.generator.provider;
 
 import dev.gateguardian.extraloader.common.ExtraLoader;
 import net.minecraft.data.PackOutput;
-import net.minecraftforge.common.data.LanguageProvider;
+import net.neoforged.neoforge.common.data.LanguageProvider;
 
 public class ExtraLanguageProvider extends LanguageProvider {
 

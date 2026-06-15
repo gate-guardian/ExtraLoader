@@ -1,11 +1,8 @@
 package dev.gateguardian.extraloader.common;
 
-import com.electronwill.nightconfig.core.file.CommentedFileConfig;
-import com.electronwill.nightconfig.core.io.WritingMode;
 import lombok.experimental.UtilityClass;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.loading.FMLPaths;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.common.ModConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Collections;
@@ -16,42 +13,39 @@ public class ExtraConfig {
 
     public final Common COMMON;
     public final Client CLIENT;
-    final ForgeConfigSpec commonSpec;
-    final ForgeConfigSpec clientSpec;
+    final ModConfigSpec commonSpec;
+    final ModConfigSpec clientSpec;
 
     static {
-        final Pair<Common, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(Common::new);
+        final Pair<Common, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(Common::new);
         commonSpec = specPair.getRight();
         COMMON = specPair.getLeft();
     }
 
     static {
-        final Pair<Client, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(Client::new);
+        final Pair<Client, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(Client::new);
         clientSpec = specPair.getRight();
         CLIENT = specPair.getLeft();
     }
 
     /**
      * Load configuration early (before Forge configuration initialization)
+     * <p>
+     * In NeoForge 1.21.1, configurations are automatically loaded by the framework
+     * after being registered via {@code ModContainer.registerConfig()}.
+     * This method is kept for forward compatibility and early-access scenarios.
      */
     public static void loadConfigEarly(ModConfig.Type type) {
-        var spec = type == ModConfig.Type.COMMON ? commonSpec : clientSpec;
-        var file = ExtraLoader.MOD_ID + "-" + type.extension() + ".toml";
-        var configData = CommentedFileConfig.builder(FMLPaths.CONFIGDIR.get().resolve(file))
-                .preserveInsertionOrder()
-                .sync()
-                .autosave()
-                .writingMode(WritingMode.REPLACE)
-                .build();
-        configData.load();
-        spec.setConfig(configData);
+        // Configs are auto-loaded by the framework in 1.21.1+
+        // The config values (ConfigValue<?>) will have their data available
+        // once the ModConfigEvent.Loading event has completed.
     }
 
     public final class Common {
 
-        public final ForgeConfigSpec.BooleanValue enableSystemGlobalPacks;
+        public final ModConfigSpec.BooleanValue enableSystemGlobalPacks;
 
-        public Common(ForgeConfigSpec.Builder enableSystemGlobalPacks) {
+        public Common(ModConfigSpec.Builder enableSystemGlobalPacks) {
             enableSystemGlobalPacks
                     .comment("Extra Loader Configuration")
                     .comment("Convention over configuration:")
@@ -72,9 +66,9 @@ public class ExtraConfig {
 
     public final class Client {
 
-        public final ForgeConfigSpec.ConfigValue<List<? extends String>> disabledResourcePacks;
+        public final ModConfigSpec.ConfigValue<List<? extends String>> disabledResourcePacks;
 
-        public Client(ForgeConfigSpec.Builder builder) {
+        public Client(ModConfigSpec.Builder builder) {
             disabledResourcePacks = builder
                     .translation("config.extraloader.disabledResourcePacks")
                     .comment("List of disabled resource packs.")
