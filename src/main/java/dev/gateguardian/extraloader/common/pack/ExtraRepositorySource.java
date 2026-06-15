@@ -3,6 +3,7 @@ package dev.gateguardian.extraloader.common.pack;
 import dev.gateguardian.extraloader.common.ExtraLoader;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.FilePackResources;
+import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.PathPackResources;
 import net.minecraft.server.packs.PackLocationInfo;
@@ -81,9 +82,9 @@ public class ExtraRepositorySource implements RepositorySource {
     private void loadPackIfValid(Path path, PackLoadMode mode, Consumer<Pack> onLoad) {
         Pack.ResourcesSupplier supplier;
         if (isValidFilePack(path)) {
-            supplier = new FilePackResources.FileResourcesSupplier(path.toFile());
+            supplier = new FilePackResourcesSupplier(path);
         } else if (isValidPathPack(path)) {
-            supplier = new PathPackResources.PathResourcesSupplier(path);
+            supplier = new PathPackResourcesSupplier(path);
         } else {
             ExtraLoader.LOGGER.warn(
                     "Skipping invalid {} pack: {}",
@@ -137,5 +138,37 @@ public class ExtraRepositorySource implements RepositorySource {
         if (!Files.isRegularFile(path.resolve("pack.mcmeta"))) return false;
         // Auto-detect pack type based on content
         return Files.isDirectory(path.resolve(packType.getDirectory()));
+    }
+
+    /**
+     * ResourcesSupplier for file-based (ZIP/JAR) packs.
+     * Replaces the removed FilePackResources.FileResourcesSupplier.
+     */
+    private record FilePackResourcesSupplier(Path path) implements Pack.ResourcesSupplier {
+        @Override
+        public PackResources openPrimary(PackLocationInfo info) {
+            return new FilePackResources(info, new FilePackResources.SharedZipFileAccess(path.toFile()), path.getFileName().toString());
+        }
+
+        @Override
+        public PackResources openFull(PackLocationInfo info, Pack.Metadata metadata) {
+            return openPrimary(info);
+        }
+    }
+
+    /**
+     * ResourcesSupplier for directory-based packs.
+     * Replaces the removed PathPackResources.PathResourcesSupplier.
+     */
+    private record PathPackResourcesSupplier(Path path) implements Pack.ResourcesSupplier {
+        @Override
+        public PackResources openPrimary(PackLocationInfo info) {
+            return new PathPackResources(info, path);
+        }
+
+        @Override
+        public PackResources openFull(PackLocationInfo info, Pack.Metadata metadata) {
+            return openPrimary(info);
+        }
     }
 }

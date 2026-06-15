@@ -3,7 +3,7 @@ package dev.gateguardian.extraloader.common;
 import dev.gateguardian.extraloader.common.pack.ExtraRepositorySource;
 import lombok.Getter;
 import lombok.experimental.Accessors;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModLoadingContext;
@@ -35,7 +35,7 @@ public class ExtraLoader {
     public static final Path SYSTEM_GLOBAL_PACK_DIR = Path.of(
             System.getProperty("user.home"),
             "." + MOD_ID,
-            FMLLoader.versionInfo().mcVersion()
+            FMLLoader.getCurrent().getVersionInfo().mcVersion()
     );
 
     @Getter
@@ -54,8 +54,8 @@ public class ExtraLoader {
         modEventBus.addListener(this::addPackFinders);
     }
 
-    public static ResourceLocation id(String path) {
-        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
+    public static Identifier id(String path) {
+        return Identifier.fromNamespaceAndPath(MOD_ID, path);
     }
 
     protected void addPackFinders(AddPackFindersEvent event) {

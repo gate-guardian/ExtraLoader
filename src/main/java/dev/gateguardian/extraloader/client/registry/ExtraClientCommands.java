@@ -5,7 +5,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import dev.gateguardian.extraloader.common.ExtraConfig;
 import dev.gateguardian.extraloader.common.ExtraLoader;
 import lombok.experimental.UtilityClass;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;

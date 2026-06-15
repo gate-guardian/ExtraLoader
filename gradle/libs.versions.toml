@@ -1,39 +1,45 @@
 [versions]
-minecraft             = "1.21.1"
-neo                   = "21.1.218"
+minecraft             = "26.1.2"
+neo                   = "26.1.2.76"
 
 jetbrains-annotations = "26.0.1"
-mixin                 = "0.8.7"
-mixinExtras           = "0.5.0-rc.3"
+mixin                 = "0.17.3+mixin.0.8.7"
+mixinExtras           = "0.5.4"
 
-emi                   = "1.1.22+1.21.1"
-jei                   = "19.21.1.305"
-# REI - 1.21.1 NeoForge 可用性待确认
+# EMI - 1.21.5 暂不可用，已注释
+# emi                   = "1.1.22+1.21.1"
+# JEI - 版本号待确认，暂注释
+# jei                   = "19.21.1.305"
+# REI - 可用性待确认
 
-jade                  = "15.10.5+neoforge"
+# Jade - 版本号待确认，暂注释
+# jade                  = "15.10.5+neoforge"
 modernui              = "3.11.1.9"
 jecharacters          = "4.5.23"
 
 # Plugins
-modDevGradle          = "2.0.122"
+modDevGradle          = "2.0.140"
 lombok                = "9.1.0"
 
 [libraries]
 jetbrains-annotations = { module = "org.jetbrains:annotations"                           , version.ref = "jetbrains-annotations" }
-mixin                 = { module = "org.spongepowered:mixin"                             , version.ref = "mixin" }
+mixin                 = { module = "net.neoforged:mixin"                                 , version.ref = "mixin" }
 mixinExtras-common    = { module = "io.github.llamalad7:mixinextras-common"              , version.ref = "mixinExtras" }
 mixinExtras-neoforge  = { module = "io.github.llamalad7:mixinextras-neoforge"            , version.ref = "mixinExtras" }
 
-emi                   = { module = "dev.emi:emi-neoforge"                                , version.ref = "emi" }
-jei-api-common        = { module = "mezz.jei:jei-1.21.1-common-api"                      , version.ref = "jei" }
-jei-api-neoforge      = { module = "mezz.jei:jei-1.21.1-neoforge-api"                    , version.ref = "jei" }
-jei-impl              = { module = "mezz.jei:jei-1.21.1-neoforge"                        , version.ref = "jei" }
+# EMI - 暂不可用
+# emi                   = { module = "dev.emi:emi-neoforge"                              , version.ref = "emi" }
+# JEI - 版本号待确认
+# jei-api-common        = { module = "mezz.jei:jei-1.21.5-common-api"                    , version.ref = "jei" }
+# jei-api-neoforge      = { module = "mezz.jei:jei-1.21.5-neoforge-api"                  , version.ref = "jei" }
+# jei-impl              = { module = "mezz.jei:jei-1.21.5-neoforge"                      , version.ref = "jei" }
 # REI - artifact 名称待确认，暂时注释
 # rei-api               = { module = "me.shedaniel:RoughlyEnoughItems-api"                , version.ref = "rei" }
 # rei-impl              = { module = "me.shedaniel:RoughlyEnoughItems-default-plugin"     , version.ref = "rei" }
 # rei-plugin            = { module = "me.shedaniel:RoughlyEnoughItems-default-plugin"     , version.ref = "rei" }
 
-jade                  = { module = "maven.modrinth:jade"                                 , version.ref = "jade" }
+# Jade - 版本号待确认
+# jade                  = { module = "maven.modrinth:jade"                               , version.ref = "jade" }
 modernui              = { module = "maven.modrinth:modern-ui"                            , version.ref = "modernui" }
 jecharacters          = { module = "maven.modrinth:I7k4B65h"                             , version.ref = "jecharacters" }
 
@@ -42,5 +48,5 @@ modDevGradle = { id = "net.neoforged.moddev", version.ref = "modDevGradle" }
 lombok       = { id = "io.freefair.lombok"  , version.ref = "lombok" }
 
 [bundles]
-jei = ["jei-api-common", "jei-api-neoforge", "jei-impl"]
+# jei = ["jei-api-common", "jei-api-neoforge", "jei-impl"]
 # rei = ["rei-api", "rei-impl", "rei-plugin"]

@@ -7,7 +7,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
-@EventBusSubscriber(modid = ExtraLoader.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = ExtraLoader.MOD_ID)
 public class DataGenerator {
 
     @SubscribeEvent
@@ -15,6 +15,6 @@ public class DataGenerator {
         var generator = event.getGenerator();
         PackOutput output = event.getGenerator().getPackOutput();
 
-        generator.addProvider(event.includeClient(), new ExtraLanguageProvider(output));
+        generator.addProvider(event.includeDev(), new ExtraLanguageProvider(output));
     }
 }

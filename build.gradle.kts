@@ -22,7 +22,7 @@ base {
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(25)
     }
 }
 
@@ -198,18 +198,18 @@ dependencies {
     implementation(libs.mixinExtras.neoforge)
     jarJar(libs.mixinExtras.neoforge)
 
-    // Recipe Viewers - compile only
-    compileOnly(libs.jei.api.common)
-    compileOnly(libs.jei.api.neoforge)
-    compileOnly(variantOf(libs.emi) { classifier("api") })
-    // REI - 1.21.1 NeoForge 暂不可用，已注释
+    // Recipe Viewers - compile only (版本待确认，暂注释)
+    // compileOnly(libs.jei.api.common)
+    // compileOnly(libs.jei.api.neoforge)
+    // compileOnly(variantOf(libs.emi) { classifier("api") })
+    // REI - 暂不可用，已注释
 
-    // region For testing
-    "localRuntime"(libs.jei.impl)
-    "localRuntime"(libs.emi)
+    // region For testing (版本待确认，暂注释)
+    // "localRuntime"(libs.jei.impl)
+    // "localRuntime"(libs.emi)
     "localClientRuntime"(libs.modernui)
     "localClientRuntime"(libs.jecharacters)
-    "localClientRuntime"(libs.jade)
+    // "localClientRuntime"(libs.jade)
     // endregion
 }
 

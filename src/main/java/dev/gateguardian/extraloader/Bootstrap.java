@@ -10,7 +10,7 @@ import net.neoforged.fml.loading.FMLEnvironment;
 public class Bootstrap {
 
     public Bootstrap(IEventBus modEventBus) {
-        if (FMLEnvironment.dist.isClient()) {
+        if (FMLEnvironment.getDist().isClient()) {
             new ExtraLoaderClient(modEventBus);
         } else {
             new ExtraLoader(modEventBus);
