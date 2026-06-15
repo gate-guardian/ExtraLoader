@@ -3,13 +3,13 @@ package dev.gateguardian.extraloader.client;
 import dev.gateguardian.extraloader.client.registry.ExtraClientCommands;
 import dev.gateguardian.extraloader.common.ExtraLoader;
 import lombok.experimental.UtilityClass;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RegisterClientCommandsEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
 
 @UtilityClass
-@Mod.EventBusSubscriber(modid = ExtraLoader.MOD_ID, value = Dist.CLIENT)
+@EventBusSubscriber(modid = ExtraLoader.MOD_ID, value = Dist.CLIENT)
 public class ExtraClientEvents {
 
     @SubscribeEvent

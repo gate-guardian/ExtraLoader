@@ -8,8 +8,6 @@ plugins {
     alias(libs.plugins.lombok)
 }
 
-apply(from = "repositories.gradle.kts")
-
 val modId      = requiredProperty("mod_id")
 val modVersion = requiredProperty("mod_version")
 val modGroupId = requiredProperty("mod_group_id")
@@ -24,8 +22,75 @@ base {
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(21)
     }
+}
+
+repositories {
+    mavenCentral()
+    // JEI
+    maven {
+        name = "Jared's Maven"
+        url = uri("https://maven.blamejared.com/")
+    }
+    // JEI mirror, AE2, Mekanism
+    maven {
+        name = "ModMaven"
+        url = uri("https://modmaven.dev")
+    }
+    // shedaniel - REI, architectury, cloth-config
+    maven {
+        url = uri("https://maven.shedaniel.me/")
+        content {
+            includeGroupAndSubgroups("me.shedaniel")
+            includeGroup("dev.architectury")
+        }
+    }
+    // terraformers - EMI
+    maven {
+        url = uri("https://maven.terraformersmc.com/releases/")
+        content {
+            includeGroup("dev.emi")
+        }
+    }
+
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "Modrinth"
+                url = uri("https://api.modrinth.com/maven")
+            }
+        }
+        filter {
+            includeGroup("maven.modrinth")
+        }
+    }
+
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "CurseForge"
+                url = uri("https://cursemaven.com")
+            }
+        }
+        filter {
+            includeGroup("curse.maven")
+        }
+    }
+
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "FTB Mods"
+                url = uri("https://maven.ftb.dev/releases")
+            }
+        }
+        filter {
+            includeGroup("dev.ftb.mods")
+        }
+    }
+
+    mavenLocal()
 }
 
 val generateModMetadata by tasks.registering(ProcessResources::class) {
@@ -62,13 +127,8 @@ sourceSets {
     }
 }
 
-legacyForge {
-    version = "${libs.versions.minecraft.get()}-${libs.versions.forge.get()}"
-
-    parchment {
-        minecraftVersion = libs.versions.minecraft.get()
-        mappingsVersion = libs.versions.parchment.get()
-    }
+neoForge {
+    version = libs.versions.neo.get()
 
     mods {
         register(modId) {
@@ -81,18 +141,18 @@ legacyForge {
         register("client") {
             client()
             sourceSet = client
-            systemProperty("forge.enabledGameTestNamespaces", modId)
+            systemProperty("neoforge.enabledGameTestNamespaces", modId)
         }
 
         register("server") {
             server()
             programArgument("--nogui")
-            systemProperty("forge.enabledGameTestNamespaces", modId)
+            systemProperty("neoforge.enabledGameTestNamespaces", modId)
         }
 
         register("gameTestServer") {
             type = "gameTestServer"
-            systemProperty("forge.enabledGameTestNamespaces", modId)
+            systemProperty("neoforge.enabledGameTestNamespaces", modId)
         }
 
         register("data") {
@@ -111,15 +171,7 @@ legacyForge {
             logLevel = Level.DEBUG
         }
     }
-
-    ideSyncTask(generateModMetadata)
 }
-
-mixin {
-    add(sourceSets.main.get(), "${modId}.refmap.json")
-    config("${modId}.mixins.json")
-}
-
 val localImplementation by configurations.creating
 val localRuntime by configurations.creating
 val localClientRuntime by configurations.creating
@@ -139,32 +191,25 @@ configurations {
     }
 }
 
-obfuscation {
-    createRemappingConfiguration(localImplementation)
-    createRemappingConfiguration(localRuntime)
-    createRemappingConfiguration(localClientRuntime)
-}
-
 dependencies {
     // Mixin (& Extras)
-    annotationProcessor(variantOf(libs.mixin) { classifier("processor") })
     annotationProcessor(libs.mixinExtras.common)
     implementation(libs.mixinExtras.common)
-    implementation(libs.mixinExtras.forge)
-    jarJar(libs.mixinExtras.forge)
+    implementation(libs.mixinExtras.neoforge)
+    jarJar(libs.mixinExtras.neoforge)
 
-    // Recipe Viewers
-    modCompileOnly(libs.jei.api.common)
-    modCompileOnly(libs.jei.api.forge)
-    modCompileOnly(variantOf(libs.emi) { classifier("api") })
-    modCompileOnly(libs.rei.api)
+    // Recipe Viewers - compile only
+    compileOnly(libs.jei.api.common)
+    compileOnly(libs.jei.api.neoforge)
+    compileOnly(variantOf(libs.emi) { classifier("api") })
+    // REI - 1.21.1 NeoForge 暂不可用，已注释
 
     // region For testing
-    "modLocalRuntime"(libs.jei.impl)
-    "modLocalRuntime"(libs.emi)
-    "modLocalClientRuntime"(libs.modernui)
-    "modLocalClientRuntime"(libs.jecharacters)
-    "modLocalClientRuntime"(libs.jade)
+    "localRuntime"(libs.jei.impl)
+    "localRuntime"(libs.emi)
+    "localClientRuntime"(libs.modernui)
+    "localClientRuntime"(libs.jecharacters)
+    "localClientRuntime"(libs.jade)
     // endregion
 }
 

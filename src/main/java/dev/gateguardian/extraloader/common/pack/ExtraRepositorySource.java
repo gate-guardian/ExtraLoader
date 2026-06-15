@@ -5,6 +5,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.FilePackResources;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.PathPackResources;
+import net.minecraft.server.packs.PackLocationInfo;
+import net.minecraft.server.packs.PackSelectionConfig;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.RepositorySource;
 
@@ -14,6 +16,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
@@ -78,9 +81,9 @@ public class ExtraRepositorySource implements RepositorySource {
     private void loadPackIfValid(Path path, PackLoadMode mode, Consumer<Pack> onLoad) {
         Pack.ResourcesSupplier supplier;
         if (isValidFilePack(path)) {
-            supplier = name -> new FilePackResources(name, path.toFile(), false);
+            supplier = new FilePackResources.FileResourcesSupplier(path.toFile());
         } else if (isValidPathPack(path)) {
-            supplier = name -> new PathPackResources(name, path, false);
+            supplier = new PathPackResources.PathResourcesSupplier(path);
         } else {
             ExtraLoader.LOGGER.warn(
                     "Skipping invalid {} pack: {}",
@@ -92,13 +95,15 @@ public class ExtraRepositorySource implements RepositorySource {
         String packName = path.getFileName().toString();
         String packId = ExtraLoader.MOD_ID + "/" + mode.getFolderName() + "/" + packName;
         Pack pack = Pack.readMetaAndCreate(
-                packId,
-                Component.literal(packName),
-                mode.isRequired(),
+                new PackLocationInfo(
+                        packId,
+                        Component.literal(packName),
+                        mode.getPackSource(),
+                        Optional.empty()
+                ),
                 supplier,
                 packType,
-                Pack.Position.TOP,
-                mode.getPackSource()
+                new PackSelectionConfig(mode.isRequired(), Pack.Position.TOP, false)
         );
         if (pack != null) {
             onLoad.accept(pack);
