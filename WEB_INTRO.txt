@@ -1,0 +1,32 @@
+[h1=核心功能]
+
+Extra Loader 是一个 Minecraft Forge 模组，用于集中管理资源包和数据包。无需手动复制到游戏目录，支持直接使用目录或 `.zip/.jar` 文件。
+
+[h2=全局路径]
+
+instance 全局：`<游戏目录>/extraloader/`
+system 全局：`C:\Users\[用户名]\.extraloader\[游戏版本]\`
+
+[h3=按功能分为:]
+
+`required` - 强制加载，始终生效，无法禁用（红色）
+`optional` - 可选加载，默认禁用，玩家可手动启用（青色）
+`default`  - 默认加载，玩家可手动禁用（绿色）
+
+[h3=自动识别规则]
+
+包含 `assets/` → 资源包
+包含 `data/` → 数据包
+两者都有 → 同时加载
+
+[h2=快捷命令]
+
+`/extraloader open instance` 与 `/extraloader open system`
+
+[h1=设计理念]
+
+免复制：无需手动将资源包复制到游戏目录
+跨整合包复用：同一版本的不同整合包可共享同一份资源包
+约定优于配置、开箱即用：按目录结构自动加载，无需额外配置
+
+[ban:title_menu]
