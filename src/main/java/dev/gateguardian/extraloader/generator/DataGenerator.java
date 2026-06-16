@@ -2,7 +2,6 @@ package dev.gateguardian.extraloader.generator;
 
 import dev.gateguardian.extraloader.common.ExtraLoader;
 import dev.gateguardian.extraloader.generator.provider.ExtraLanguageProvider;
-import net.minecraft.data.PackOutput;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
@@ -11,10 +10,7 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 public class DataGenerator {
 
     @SubscribeEvent
-    public static void bootstrap(GatherDataEvent event) {
-        var generator = event.getGenerator();
-        PackOutput output = event.getGenerator().getPackOutput();
-
-        generator.addProvider(event.includeDev(), new ExtraLanguageProvider(output));
+    public static void bootstrap(GatherDataEvent.Client event) {
+        event.getGenerator().addProvider(true, new ExtraLanguageProvider(event.getGenerator().getPackOutput()));
     }
 }
