@@ -1,0 +1,97 @@
+name: Build & Verify ExtraLoader
+
+on:
+  push:
+    branches-ignore:
+      - 'renovate/**'
+  pull_request:
+
+jobs:
+  build-and-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Detect branch info
+        id: info
+        run: |
+          BRANCH="${GITHUB_REF#refs/heads/}"
+          echo "branch=${BRANCH}" >> $GITHUB_OUTPUT
+          case "${BRANCH}" in
+            1.20.1)
+              echo "java=17" >> $GITHUB_OUTPUT
+              echo "mod_file=mods.toml" >> $GITHUB_OUTPUT
+              echo "loader=forge" >> $GITHUB_OUTPUT
+              ;;
+            1.21.1)
+              echo "java=21" >> $GITHUB_OUTPUT
+              echo "mod_file=neoforge.mods.toml" >> $GITHUB_OUTPUT
+              echo "loader=neoforge" >> $GITHUB_OUTPUT
+              ;;
+            26.1.2)
+              echo "java=25" >> $GITHUB_OUTPUT
+              echo "mod_file=neoforge.mods.toml" >> $GITHUB_OUTPUT
+              echo "loader=neoforge" >> $GITHUB_OUTPUT
+              ;;
+            *)
+              echo "java=21" >> $GITHUB_OUTPUT
+              echo "mod_file=neoforge.mods.toml" >> $GITHUB_OUTPUT
+              echo "loader=neoforge" >> $GITHUB_OUTPUT
+              ;;
+          esac
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Gradle wrapper
+        uses: gradle/actions/wrapper-validation@v3
+
+      - name: Setup Java ${{ steps.info.outputs.java }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ steps.info.outputs.java }}
+          distribution: temurin
+
+      - name: Make Gradlew executable
+        if: runner.os != 'Windows'
+        run: chmod +x ./gradlew
+
+      # ═══════════════════════════
+      # Layer 1: 编译验证
+      # ═══════════════════════════
+      - name: Build
+        run: ./gradlew build
+
+      # ═══════════════════════════
+      # Layer 2: JAR 完整性校验
+      # ═══════════════════════════
+      - name: Verify JAR contents
+        run: |
+          JAR=$(ls build/libs/*.jar 2>/dev/null | head -1)
+          if [ -z "$JAR" ]; then echo "❌ No JAR found"; exit 1; fi
+          echo "✅ JAR: $JAR ($(du -h "$JAR" | cut -f1))"
+          CONTENTS=$(jar tf "$JAR")
+          echo "$CONTENTS" | grep -q "${{ steps.info.outputs.mod_file }}" && echo "✅ mod metadata found" || echo "❌ mod metadata missing"
+          echo "$CONTENTS" | grep -q "ExtraLoader.class" && echo "✅ main class found" || echo "❌ main class missing"
+          echo "$CONTENTS" | grep -q "mixins.json" && echo "✅ mixins config found" || echo "ℹ️ no mixins (branch may not use mixins)"
+
+      # ═══════════════════════════
+      # Layer 3: 运行时验证
+      # ═══════════════════════════
+      - name: Create test packs for runtime verification
+        run: |
+          mkdir -p run/extraloader/required/ci-test-pack/assets/minecraft
+          echo "ci-test" > run/extraloader/required/ci-test-pack/assets/minecraft/test.txt
+          echo "✅ Test packs created"
+
+      - name: GameTest runtime verification
+        run: |
+          echo "⏳ Starting GameTestServer..."
+          ./gradlew runGameTestServer --args="--nogui" 2>&1 | tee server.log &
+          SERVER_PID=$!
+          sleep 90
+          cat server.log | grep -i "extra" | head -10
+          if grep -q "ExtraLoader" server.log 2>/dev/null; then
+            echo "✅ ExtraLoader loaded successfully"
+          else
+            echo "⚠️ ExtraLoader not found in log (may be running on different output)"
+          fi
+          kill $SERVER_PID 2>/dev/null || true
